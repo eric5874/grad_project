@@ -1,17 +1,15 @@
 services:
   web:
-    build: ./web
+    build: .src/web
     ports:
       - "8501:8501"
     depends_on:
       - backend
   
   backend:
-    build: ./backend
+    build: .src/backend
     ports:
       - "8000:8000"
-    volumes:
-      - .:/code
     depends_on:
       - db
 
@@ -19,3 +17,5 @@ services:
     image: mongo:latest
     ports:
       - "27017:27017"
+    volumes:
+      - ./src/database:/data/db
