@@ -1,1 +1,7 @@
-# grad_project
+# grad project
+
+## Table of Contents
+
+- [Introduction](#introduction)
+
+## Introduction
