@@ -15,7 +15,7 @@ if not session_state['logged_in']:
 
     if st.button('Login'):
         # Perform login validation here
-        if username == 'your_username' and password == 'your_password':
+        if username == 'admin' and password == 'admin':
             session_state['logged_in'] = True
             st.success('Logged in successfully!')
         else:
