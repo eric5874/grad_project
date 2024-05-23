@@ -18,6 +18,7 @@ if not session_state['logged_in']:
         if username == 'admin' and password == 'admin':
             session_state['logged_in'] = True
             st.success('Logged in successfully!')
+            st.rerun()
         else:
             st.error('Invalid username or password')
 
