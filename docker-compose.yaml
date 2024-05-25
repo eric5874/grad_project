@@ -1,13 +1,13 @@
 services:
   web:
-    build: .src/web
+    build: src/web
     ports:
       - "8501:8501"
     depends_on:
       - backend
   
   backend:
-    build: .src/backend
+    build: src/backend
     ports:
       - "8000:8000"
     depends_on:
