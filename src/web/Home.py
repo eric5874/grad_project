@@ -1,13 +1,10 @@
 import streamlit as st
 
-# Initialize Streamlit session
-session_state = st.session_state
-
 # Create login page
-if 'logged_in' not in session_state:
-    session_state['logged_in'] = False
+if 'logged_in' not in st.session_state:
+    st.session_state['logged_in'] = False
 
-if not session_state['logged_in']:
+if not st.session_state['logged_in']:
     st.title('Login')
 
     username = st.text_input('Username')
@@ -16,7 +13,7 @@ if not session_state['logged_in']:
     if st.button('Login'):
         # Perform login validation here
         if username == 'admin' and password == 'admin':
-            session_state['logged_in'] = True
+            st.session_state['logged_in'] = True
             st.success('Logged in successfully!')
             st.rerun()
         else:
