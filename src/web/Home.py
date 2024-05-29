@@ -1,4 +1,5 @@
 import streamlit as st
+import requests
 
 # Create login page
 if 'logged_in' not in st.session_state:
@@ -18,6 +19,10 @@ if not st.session_state['logged_in']:
             st.rerun()
         else:
             st.error('Invalid username or password')
+
+    if st.button('Register'):
+        # Put the register logic here
+        pass
 
 else:
     st.title('資工所資源網站')
