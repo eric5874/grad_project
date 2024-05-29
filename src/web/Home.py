@@ -37,7 +37,6 @@ else:
     with col2:
         st.write('### 歡迎來到資工所資源網站')
         st.write('這是一個為資工所學生設計的資源網站')
-        st.write('你可以在這裡找到許多資源，例如：')
         data_structure = st.expander('資料結構')
         algorithm = st.expander('演算法')
         linear_algebra = st.expander('線性代數')
