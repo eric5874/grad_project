@@ -30,9 +30,9 @@ else:
 
     with col1:
         st.write('### 目錄')
-        st.write('1. [首頁](/)')
-        st.write('2. [資源](/resources)')
-        st.write('3. [關於](/about)')
+        st.write('1. [首頁](#目錄)')
+        st.write('2. [資源](#resources)')
+        st.write('3. [關於](#about)')
 
     with col2:
         st.write('### 歡迎來到資工所資源網站')
