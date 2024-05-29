@@ -23,5 +23,14 @@ def read_register(username: str, password: str):
     users.insert_one({"username": username, "password": password})
     return {"message": "User registered successfully"}
 
+@app.get("/login")
+def read_login(username: str, password: str):
+    users = db["users"]
+    # Check if the user exists
+    user = users.find_one({"username": username, "password": password})
+    if user:
+        return {"message": "Login successful"}
+    return {"message": "Invalid username or password"}
+
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
