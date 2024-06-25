@@ -3,21 +3,23 @@ services:
     build: src/web
     ports:
       - "8501:8501"
-    depends_on:
-      - backend
+    networks:
+      - internal
   
   backend:
     build: src/backend
     ports:
       - "8000:8000"
     environment:
-      - MONGO_URI=mongodb://db:27017
-    depends_on:
-      - db
-
+      - DB_URL=redis://db:6379
+    networks:
+      - internal
+      
   db:
-    image: mongo:latest
+    image: redis:latest
     ports:
-      - "27017:27017"
+      - "6379:6379"
     volumes:
-      - ./src/database:/data/db
+      - redis-data:/data
+    networks:
+      - internal
