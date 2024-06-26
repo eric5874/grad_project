@@ -23,3 +23,7 @@ services:
       - redis-data:/data
     networks:
       - internal
+
+networks:
+  internal:
+    driver: bridge
