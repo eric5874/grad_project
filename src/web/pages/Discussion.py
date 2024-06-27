@@ -50,5 +50,5 @@ elif st.session_state['logged_in']:
         info_card = st.container(border=True)
         info_card.title(f'{discussion["title"]}')
         info_card.write(discussion['content'])
-        info_card.write(f'作者: {discussion["username"]}')
+        info_card.write(f'發布者: {discussion["username"]}')
 
