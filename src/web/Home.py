@@ -1,4 +1,5 @@
 import streamlit as st
+from component.register import Register
 import requests
 
 # Create login page
@@ -21,7 +22,7 @@ if not st.session_state['logged_in']:
             st.error('Invalid username or password')
 
     if st.button('Register'):
-        # Put the register logic here
+        Register()
         pass
 
 else:

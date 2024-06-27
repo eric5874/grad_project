@@ -1,44 +1,41 @@
 '''
 Author: hibana2077 hibana2077@gmaill.com
 Date: 2024-05-24 02:35:11
-LastEditors: hibana2077 hibana2077@gmaill.com
-LastEditTime: 2024-06-02 11:53:33
+LastEditors: hibana2077 hibana2077@gmail.com
+LastEditTime: 2024-06-27 10:33:02
 FilePath: /grad_project/src/backend/main.py
 Description: This is main FastAPI backend file
 '''
 from fastapi import FastAPI
-import pymongo
+import redis
 import uvicorn
 import os
 
 HOST = os.getenv("HOST", "127.0.0.1")
-MONGO_URL = os.getenv("MONGO_URL", "mongodb://localhost:27017")
+DB_URL = os.getenv("DB_URL", "mongodb://localhost:6379")
 
-client = pymongo.MongoClient(MONGO_URL)
-db = client["grad_project"]
+user_db = redis.Redis(host=DB_URL, port=6379, db=0)
 app = FastAPI()
 
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
 
-@app.get("/register")
-def read_register(username: str, password: str):
-    users = db["users"]
-    # Check if the username already exists
-    if users.find_one({"username": username}):
+@app.post("/register")
+def register(data: dict):
+    username = data.get("username")
+    password = data.get("password")
+    if user_db.get(username):
         return {"message": "Username already exists"}
-    # Insert the new user
-    users.insert_one({"username": username, "password": password})
-    return {"message": "User registered successfully"}
+    user_db.set(username, password)
+    return {"message": "Registered successfully"}
 
-@app.get("/login")
-def read_login(username: str, password: str):
-    users = db["users"]
-    # Check if the user exists
-    user = users.find_one({"username": username, "password": password})
-    if user:
-        return {"message": "Login successful"}
+@app.post("/login")
+def login(data: dict):
+    username = data.get("username")
+    password = data.get("password")
+    if user_db.get(username) == password:
+        return {"message": "Logged in successfully"}
     return {"message": "Invalid username or password"}
 
 if __name__ == "__main__":
