@@ -9,7 +9,7 @@
 # grad project
 
 <p align="center">
-    <img src="https://skillicons.dev/icons?i=mongo,py,docker,fastapi" /><br>
+    <img src="https://skillicons.dev/icons?i=redis,py,docker,fastapi" /><br>
 </p>
 
 ## Table of Contents

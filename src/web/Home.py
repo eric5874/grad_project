@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import time
 import os
+import var
 
 HOST = os.getenv('HOST', 'localhost:8000')
 
@@ -89,3 +90,15 @@ else:
         1. [交大黃婷婷教授ocw](https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=76)
         2. [原文書:白算盤](https://theswissbay.ch/pdf/Books/Computer%20science/Computer%20Organization%20and%20Design-%20The%20HW_SW%20Inteface%205th%20edition%20-%20David%20A.%20Patterson%20%26%20John%20L.%20Hennessy.pdf)
         3. [交大李毅郎教授ocw](https://ocw.nycu.edu.tw/?course_page=all-course%2Fcollege-of-computer-science%2F%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B5%84%E7%B9%94-computer-organization-100%E5%AD%B8%E5%B9%B4%E5%BA%A6-%E8%B3%87%E8%A8%8A%E5%B7%A5%E7%A8%8B%E5%AD%B8%E7%B3%BB-%E6%9D%8E%E6%AF%85%E9%83%8E%E8%80%81)""")
+
+        st.write('### 新增收藏')
+        with st.form(key='favor_form'):
+            book = st.selectbox('書籍', list(var.RESOURCE.keys()), key='book', index=0)
+            submit = st.form_submit_button('新增')
+
+            if submit:
+                response = requests.post(f'http://{HOST}/favor', json={'username': st.session_state['username'], 'book': book})
+                if response.status_code == 200:
+                    st.success('新增成功')
+                else:
+                    st.error('新增失敗')

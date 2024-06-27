@@ -10,10 +10,11 @@ import os
 HOST = os.getenv("HOST", "127.0.0.1")
 DB_URL = os.getenv("DB_URL", "localhost")
 
-user_db = redis.Redis(host=DB_URL, port=6379, db=0)
-user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1)
-discussion_db = redis.Redis(host=DB_URL, port=6379, db=2)
-counter_db = redis.Redis(host=DB_URL, port=6379, db=3)
+user_db = redis.Redis(host=DB_URL, port=6379, db=0) # String
+user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1) # String
+discussion_db = redis.Redis(host=DB_URL, port=6379, db=2) # Hash
+counter_db = redis.Redis(host=DB_URL, port=6379, db=3) # String
+favoured_db = redis.Redis(host=DB_URL, port=6379, db=4) # List
 app = FastAPI()
 
 @app.get("/")
@@ -71,6 +72,19 @@ def get_all_discussions():
         temp_data["id"] = key.decode()
         discussions.append(temp_data)
     return {"discussions": discussions}
+
+@app.post("/favor")# add favor (for books)
+def add_favor(data: dict):
+    # key username value []
+    username = data.get("username")
+    bookname = data.get("bookname")
+    favoured_db.rpush(username, bookname)
+    return {"message": "Favor added successfully"}
+
+@app.get("/favor")
+def get_favor(username: str):
+    favours = favoured_db.lrange(username, 0, -1)
+    return {"favours": favours}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
