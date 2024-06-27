@@ -1,29 +1,49 @@
 import streamlit as st
-from component.register import Register
 import requests
+import time
+import os
+
+HOST = os.getenv('HOST', 'localhost:8000')
 
 # Create login page
 if 'logged_in' not in st.session_state:
     st.session_state['logged_in'] = False
 
 if not st.session_state['logged_in']:
-    st.title('Login')
+    login_tab, register_tab = st.tabs(['Login', 'Register'])
 
-    username = st.text_input('Username')
-    password = st.text_input('Password', type='password')
+    with login_tab:
+        with st.form(key='login_form'):
+            username = st.text_input('Username')
+            password = st.text_input('Password', type='password')
+            submit = st.form_submit_button('Login')
 
-    if st.button('Login'):
-        # Perform login validation here
-        if username == 'admin' and password == 'admin':
-            st.session_state['logged_in'] = True
-            st.success('Logged in successfully!')
-            st.rerun()
-        else:
-            st.error('Invalid username or password')
+            if submit:
+                response = requests.post(f'http://{HOST}/login', json={'username': username, 'password': password})
+                if response.status_code == 200:
+                    if response.json()['logged_in']:
+                        st.session_state['logged_in'] = True
+                        st.session_state['username'] = username
+                        st.success('Logged in successfully')
+                        time.sleep(1)
+                        st.rerun()
+                    else:
+                        st.error('Invalid username or password')
+                else:
+                    st.error('Error logging in')
 
-    if st.button('Register'):
-        Register()
-        pass
+    with register_tab:
+        with st.form(key='register_form'):
+            username = st.text_input('Username')
+            password = st.text_input('Password', type='password')
+            submit = st.form_submit_button('Register')
+
+            if submit:
+                response = requests.post(f'http://{HOST}/register', json={'username': username, 'password': password})
+                if response.status_code == 200:
+                    st.success('Registered successfully')
+                else:
+                    st.error('Username already exists')
 
 else:
     st.title('資工所資源網站')
@@ -36,8 +56,7 @@ else:
         st.write('3. [關於](#about)')
 
     with col2:
-        st.write('### 歡迎來到資工所資源網站')
-        st.write('這是一個為資工所學生設計的資源網站')
+        st.write(f'### {st.session_state["username"]}，歡迎回來！')
         data_structure = st.expander('資料結構')
         algorithm = st.expander('演算法')
         linear_algebra = st.expander('線性代數')

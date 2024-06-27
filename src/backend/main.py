@@ -1,20 +1,16 @@
-'''
-Author: hibana2077 hibana2077@gmaill.com
-Date: 2024-05-24 02:35:11
-LastEditors: hibana2077 hibana2077@gmail.com
-LastEditTime: 2024-06-27 10:33:02
-FilePath: /grad_project/src/backend/main.py
-Description: This is main FastAPI backend file
-'''
+import base64
 from fastapi import FastAPI
+from PIL import Image
 import redis
 import uvicorn
+import numpy as np
 import os
 
 HOST = os.getenv("HOST", "127.0.0.1")
-DB_URL = os.getenv("DB_URL", "mongodb://localhost:6379")
+DB_URL = os.getenv("DB_URL", "localhost")
 
 user_db = redis.Redis(host=DB_URL, port=6379, db=0)
+user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1)
 app = FastAPI()
 
 @app.get("/")
@@ -34,9 +30,21 @@ def register(data: dict):
 def login(data: dict):
     username = data.get("username")
     password = data.get("password")
-    if user_db.get(username) == password:
-        return {"message": "Logged in successfully"}
-    return {"message": "Invalid username or password"}
+    print(username, password, user_db.get(username).decode())
+    if user_db.get(username).decode() == password:
+        return {"message": "Logged in successfully", "logged_in": True}
+    return {"message": "Invalid username or password", "logged_in": False}
+
+@app.get("/avatar")
+def get_avatar(username: str):
+    avatar = user_avatar_db.get(username)
+    if avatar:
+        return {"avatar": avatar.decode()}
+    random_avatar = np.random.randint(1,4)
+    with open(f"./default{random_avatar}_avatar.jpg", "rb") as f:
+        avatar = base64.b64encode(f.read()).decode()
+        user_avatar_db.set(username, avatar)
+    return {"avatar": avatar}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)

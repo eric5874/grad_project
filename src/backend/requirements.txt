@@ -1,4 +1,5 @@
 fastapi
 requests
-ccxt
+pillow
+numpy
 redis
