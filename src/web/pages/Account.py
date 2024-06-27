@@ -15,11 +15,22 @@ if not st.session_state['logged_in']:
     st.warning('請先登入')
     
 elif st.session_state['logged_in']:
-    col1, col2 = st.columns([5,5])
+    col1, col2 = st.columns([3,7])
     with col1:
         st.title('我的帳戶')
         st.markdown(f'### {st.session_state["username"]}')
     avatar_base64 = requests.get(f'http://{HOST}/avatar', params={'username': st.session_state['username']}).json()['avatar']
     avatar = Image.open(BytesIO(base64.b64decode(avatar_base64)))
     with col2:
-        st.image(avatar, width=200)
+        left_co, cent_co,last_co = st.columns(3)
+        with cent_co:
+            st.image(avatar, width=200)
+        img_file_buffer = st.file_uploader('Upload a JPG image', type=['jpg'])
+        if img_file_buffer is not None:
+            if st.button('Upload'):
+                img = Image.open(img_file_buffer)
+                img_base64 = base64.b64encode(img_file_buffer.getvalue()).decode()
+                requests.post(f'http://{HOST}/avatar', json={'username': st.session_state['username'], 'avatar': img_base64})
+                st.success('Avatar uploaded successfully')
+                time.sleep(0.4)
+                st.rerun()
