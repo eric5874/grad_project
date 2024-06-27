@@ -97,7 +97,7 @@ else:
             submit = st.form_submit_button('新增')
 
             if submit:
-                response = requests.post(f'http://{HOST}/favor', json={'username': st.session_state['username'], 'book': book})
+                response = requests.post(f'http://{HOST}/favor', json={'username': st.session_state['username'], 'bookname': book})
                 if response.status_code == 200:
                     st.success('新增成功')
                 else:
