@@ -12,5 +12,20 @@ RESOURCE = {
     "原文書:恐龍本":"https://os.ecci.ucr.ac.cr/slides/Abraham-Silberschatz-Operating-System-Concepts-10th-2018.pdf",
     "原文書:白算盤":"https://theswissbay.ch/pdf/Books/Computer%20science/Computer%20Organization%20and%20Design-%20The%20HW_SW%20Inteface%205th%20edition%20-%20David%20A.%20Patterson%20%26%20John%20L.%20Hennessy.pdf",
     "交大李毅郎教授ocw":"https://ocw.nycu.edu.tw/?course_page=all-course%2Fcollege-of-computer-science%2F%E8%A8%88%E7%AE%97%E6%A9%9F%E7%B5%84%E7%B9%94-computer-organization-100%E5%AD%B8%E5%B9%B4%E5%BA%A6-%E8%B3%87%E8%A8%8A%E5%B7%A5%E7%A8%8B%E5%AD%B8%E7%B3%BB-%E6%9D%8E%E6%AF%85%E9%83%8E%E8%80%81",
-    "交大黃婷婷教授ocw":"https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=76"
+    "交大黃婷婷教授ocw":"https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=76",
+    #以下是推薦要放的東西
+    "黑底三角np理論":"https://www.academia.edu/44422461/Computers_and_intractability_a_guide_to_the_theory_of_np_completeness_garey_amp_johnson",
+    "台灣大學ocw":"https://ocw.aca.ntu.edu.tw/ntu-ocw/category/3",
+    "清大資工所考古題":"https://www.lib.nthu.edu.tw/library/department/ref/exam/eecs/cs.html",
+    "清華大學ocw":"https://ocw.nthu.edu.tw/ocw/",
+    "陽明交通ocw":"https://ocw.nycu.edu.tw/",
+    "成功大學ocw":"https://i-ocw.ctld.ncku.edu.tw/",
+    "成功大學資工所考古":"https://exam.lib.ncku.edu.tw/master_subject.php?department_code=OD12",
+    "中央大學ocw":"https://ocw.ncu.edu.tw/",
+    "中央資工所考古":"https://rapid.lib.ncu.edu.tw/cexamn/EC02.html",
+    "中山大學ocw":"https://digital.nsysu.edu.tw/611-2/",
+    "中山大學考古":"https://lis.nsysu.edu.tw/p/412-1001-6014.php?Lang=zh-tw",
+    "中興大學ocw":"https://cdtl.video.nchu.edu.tw/dir/1206",
+    "中正大學ocw":"https://ocw.ccu.edu.tw/",
+    "中正大學資工所考古":"https://cs.ccu.edu.tw/p/404-1094-6488.php?Lang=zh-tw"
 }
