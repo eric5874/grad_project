@@ -15,17 +15,24 @@ RESOURCE = {
     "交大黃婷婷教授ocw":"https://ocw.nthu.edu.tw/ocw/index.php?page=course&cid=76",
     #以下是推薦要放的東西
     "黑底三角np理論":"https://www.academia.edu/44422461/Computers_and_intractability_a_guide_to_the_theory_of_np_completeness_garey_amp_johnson",
-    "台灣大學ocw":"https://ocw.aca.ntu.edu.tw/ntu-ocw/category/3",
+    "台灣大學ocw":"https://ocw.aca.ntu.edu.tw/ntu-ocw/category/3",#ntu
+    #
     "清大資工所考古題":"https://www.lib.nthu.edu.tw/library/department/ref/exam/eecs/cs.html",
-    "清華大學ocw":"https://ocw.nthu.edu.tw/ocw/",
-    "陽明交通ocw":"https://ocw.nycu.edu.tw/",
+    "清華大學ocw":"https://ocw.nthu.edu.tw/ocw/",#nthu
+    #
+    "陽明交通ocw":"https://ocw.nycu.edu.tw/",#nycu
+    #
     "成功大學ocw":"https://i-ocw.ctld.ncku.edu.tw/",
-    "成功大學資工所考古":"https://exam.lib.ncku.edu.tw/master_subject.php?department_code=OD12",
+    "成功大學資工所考古":"https://exam.lib.ncku.edu.tw/master_subject.php?department_code=OD12",#ncku
+    #
     "中央大學ocw":"https://ocw.ncu.edu.tw/",
-    "中央資工所考古":"https://rapid.lib.ncu.edu.tw/cexamn/EC02.html",
+    "中央資工所考古":"https://rapid.lib.ncu.edu.tw/cexamn/EC02.html",#ncu
+    #
     "中山大學ocw":"https://digital.nsysu.edu.tw/611-2/",
-    "中山大學考古":"https://lis.nsysu.edu.tw/p/412-1001-6014.php?Lang=zh-tw",
-    "中興大學ocw":"https://cdtl.video.nchu.edu.tw/dir/1206",
+    "中山大學考古":"https://lis.nsysu.edu.tw/p/412-1001-6014.php?Lang=zh-tw",#nsysu
+    #
+    "中興大學ocw":"https://cdtl.video.nchu.edu.tw/dir/1206",#nchu
+    #
     "中正大學ocw":"https://ocw.ccu.edu.tw/",
-    "中正大學資工所考古":"https://cs.ccu.edu.tw/p/404-1094-6488.php?Lang=zh-tw"
+    "中正大學資工所考古":"https://cs.ccu.edu.tw/p/404-1094-6488.php?Lang=zh-tw"#ccu
 }
