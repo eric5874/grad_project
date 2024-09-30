@@ -10,11 +10,12 @@ import os
 HOST = os.getenv("HOST", "127.0.0.1")
 DB_URL = os.getenv("DB_URL", "localhost")
 
-user_db = redis.Redis(host=DB_URL, port=6379, db=0) # String
-user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1) # String
-discussion_db = redis.Redis(host=DB_URL, port=6379, db=2) # Hash
-counter_db = redis.Redis(host=DB_URL, port=6379, db=3) # String
-favoured_db = redis.Redis(host=DB_URL, port=6379, db=4) # List
+user_db = redis.Redis(host=DB_URL, port=6379, db=0)  # String
+user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1)  # String
+discussion_db = redis.Redis(host=DB_URL, port=6379, db=2)  # Hash
+counter_db = redis.Redis(host=DB_URL, port=6379, db=3)  # String
+favoured_db = redis.Redis(host=DB_URL, port=6379, db=4)  # List
+user_intro_db = redis.Redis(host=DB_URL, port=6379, db=5)  # String (新增自我介紹資料庫)
 app = FastAPI()
 
 @app.get("/")
@@ -34,8 +35,7 @@ def register(data: dict):
 def login(data: dict):
     username = data.get("username")
     password = data.get("password")
-    print(username, password, user_db.get(username).decode())
-    if user_db.get(username).decode() == password:
+    if user_db.get(username) and user_db.get(username).decode() == password:
         return {"message": "Logged in successfully", "logged_in": True}
     return {"message": "Invalid username or password", "logged_in": False}
 
@@ -44,7 +44,7 @@ def get_avatar(username: str):
     avatar = user_avatar_db.get(username)
     if avatar:
         return {"avatar": avatar.decode()}
-    random_avatar = np.random.randint(1,4)
+    random_avatar = np.random.randint(1, 4)
     with open(f"./default{random_avatar}_avatar.jpg", "rb") as f:
         avatar = base64.b64encode(f.read()).decode()
         user_avatar_db.set(username, avatar)
@@ -57,9 +57,23 @@ def upload_avatar(data: dict):
     user_avatar_db.set(username, avatar)
     return {"message": "Avatar uploaded successfully"}
 
+# 新增自我介紹的 API
+@app.get("/introduction")
+def get_introduction(username: str):
+    introduction = user_intro_db.get(username)
+    if introduction:
+        return {"introduction": introduction.decode()}
+    return {"introduction": ""}
+
+@app.post("/introduction")
+def update_introduction(data: dict):
+    username = data.get("username")
+    introduction = data.get("introduction")
+    user_intro_db.set(username, introduction)
+    return {"message": "Introduction updated successfully"}
+
 @app.post("/discussion")
 def create_discussion(data: dict):
-    # hash type
     discussion_id = counter_db.incr("discussion_id")
     discussion_db.hset(discussion_id, mapping=data)
     return {"message": "Discussion created successfully"}
@@ -73,9 +87,8 @@ def get_all_discussions():
         discussions.append(temp_data)
     return {"discussions": discussions}
 
-@app.post("/favor")# add favor (for books)
+@app.post("/favor")
 def add_favor(data: dict):
-    # key username value []
     username = data.get("username")
     bookname = data.get("bookname")
     favoured_db.rpush(username, bookname)
@@ -84,7 +97,7 @@ def add_favor(data: dict):
 @app.get("/favor")
 def get_favor(username: str):
     favours = favoured_db.lrange(username, 0, -1)
-    return {"favours": favours}
+    return {"favours": [f.decode() for f in favours]}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
