@@ -5,6 +5,7 @@ import os
 import base64
 from io import BytesIO
 from PIL import Image
+from datetime import datetime
 
 HOST = os.getenv('HOST', 'localhost:8000')
 
@@ -37,14 +38,16 @@ elif st.session_state['logged_in']:
                 time.sleep(0.4)
                 st.rerun()
 
-    # Self-introduction section
-    st.subheader('自我介紹')
-    intro_response = requests.get(f'http://{HOST}/introduction', params={'username': st.session_state['username']}).json()
-    introduction = intro_response.get('introduction', '')
+    # Mood diary section
+    st.subheader('心情日記')
+    diary_response = requests.get(f'http://{HOST}/diary', params={'username': st.session_state['username']}).json()
+    diary = diary_response.get('diary', '')
 
-    introduction_input = st.text_area('更新自我介紹', value=introduction)
-    if st.button('更新自我介紹'):
-        requests.post(f'http://{HOST}/introduction', json={'username': st.session_state['username'], 'introduction': introduction_input})
-        st.success('自我介紹更新成功')
+    diary_input = st.text_area('撰寫或更新心情日記', value=diary)
+    if st.button('更新心情日記'):
+        current_date = datetime.now().strftime('%Y/%m/%d')
+        updated_diary = f"{diary_input} ({current_date})"
+        requests.post(f'http://{HOST}/diary', json={'username': st.session_state['username'], 'diary': updated_diary})
+        st.success('心情日記更新成功')
         time.sleep(0.4)
         st.rerun()

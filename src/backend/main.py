@@ -6,6 +6,7 @@ import uvicorn
 import numpy as np
 import time
 import os
+from datetime import datetime
 
 HOST = os.getenv("HOST", "127.0.0.1")
 DB_URL = os.getenv("DB_URL", "localhost")
@@ -15,7 +16,7 @@ user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1)  # String
 discussion_db = redis.Redis(host=DB_URL, port=6379, db=2)  # Hash
 counter_db = redis.Redis(host=DB_URL, port=6379, db=3)  # String
 favoured_db = redis.Redis(host=DB_URL, port=6379, db=4)  # List
-user_intro_db = redis.Redis(host=DB_URL, port=6379, db=5)  # String (新增自我介紹資料庫)
+user_diary_db = redis.Redis(host=DB_URL, port=6379, db=5)  # List (更新為心情日記資料庫)
 app = FastAPI()
 
 @app.get("/")
@@ -57,20 +58,20 @@ def upload_avatar(data: dict):
     user_avatar_db.set(username, avatar)
     return {"message": "Avatar uploaded successfully"}
 
-# 新增自我介紹的 API
-@app.get("/introduction")
-def get_introduction(username: str):
-    introduction = user_intro_db.get(username)
-    if introduction:
-        return {"introduction": introduction.decode()}
-    return {"introduction": ""}
+# 新增心情日記的 API
+@app.get("/diary")
+def get_diary(username: str):
+    diary_entries = user_diary_db.lrange(username, 0, -1)
+    return {"diary": [entry.decode() for entry in diary_entries]}
 
-@app.post("/introduction")
-def update_introduction(data: dict):
+@app.post("/diary")
+def update_diary(data: dict):
     username = data.get("username")
-    introduction = data.get("introduction")
-    user_intro_db.set(username, introduction)
-    return {"message": "Introduction updated successfully"}
+    diary_entry = data.get("diary")
+    current_date = datetime.now().strftime('%Y/%m/%d')
+    diary_with_date = f"{diary_entry} ({current_date})"
+    user_diary_db.rpush(username, diary_with_date)
+    return {"message": "Diary entry added successfully"}
 
 @app.post("/discussion")
 def create_discussion(data: dict):
