@@ -69,7 +69,7 @@ def update_diary(data: dict):
     username = data.get("username")
     diary_entry = data.get("diary")
     current_date = datetime.now().strftime('%Y/%m/%d')
-    diary_with_date = f"{diary_entry} ({current_date})"
+    diary_with_date = f" ({current_date})"
     user_diary_db.rpush(username, diary_with_date)
     return {"message": "Diary entry added successfully"}
 
