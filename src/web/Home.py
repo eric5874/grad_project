@@ -4,6 +4,8 @@ import time
 import os
 import var
 
+from news_utl.ntu_csie import fetch_ntu_csie_news
+
 HOST = os.getenv('HOST', 'localhost:8000')
 
 # Create login page
@@ -58,6 +60,12 @@ else:
 
     with col2:
         st.write(f'### {st.session_state["username"]}，歡迎回來！')
+
+        st.write('### 最新消息')
+        news_df = fetch_ntu_csie_news()
+        st.write(news_df)
+
+        st.write('### 資源')
         data_structure = st.expander('資料結構')
         algorithm = st.expander('演算法')
         linear_algebra = st.expander('線性代數')
