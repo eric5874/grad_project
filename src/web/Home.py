@@ -64,10 +64,11 @@ else:
 
         st.write('### 最新消息')
         news_df = fetch_ntu_csie_news()
-        news_df = fetch_nycu_admissions_info()
 
         md_template = """| 標題 | 日期 | 連結 |\n| ---- | ---- | ---- |\n"""
         # markdown table
+        st.write('### 最新消息')
+        news_df = fetch_nycu_admissions_info()
         for i, row in news_df.iterrows():
             full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
             md_template += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
