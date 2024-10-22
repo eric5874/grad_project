@@ -12,7 +12,7 @@ def display_news():
     # Fetch NTU news and include date
     ntu_news_df = fetch_ntu_csie_news()
     for i, row in ntu_news_df.iterrows():
-        full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
+        full_link = f"{row['link']}"
         md_template_ntu += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
     
     # Fetch NYCU news and exclude date
