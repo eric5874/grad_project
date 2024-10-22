@@ -65,13 +65,14 @@ else:
         st.write('### 最新消息')
         news_df = fetch_ntu_csie_news()
 
-        md_template = """| 標題 | 日期 | 連結 |\n| ---- | ---- | ---- |\n"""
-        # markdown table
-        st.write('### 最新消息')
+        # Create Markdown table header without the date column
+        md_template = """| 標題 | 連結 |\n| ---- | ---- |\n"""
+
+        # Fetch nycu information and skip the date column
         news_df = fetch_nycu_admissions_info()
         for i, row in news_df.iterrows():
             full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
-            md_template += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
+            md_template += f"| {row['title']} | [Link]({full_link}) |\n"  # Skip the 'date' field
 
         st.markdown(md_template)
 
