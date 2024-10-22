@@ -21,10 +21,17 @@ def display_news():
         full_link = f"{row['link']}"
         md_template_nycu += f"| {row['title']} | [Link]({full_link}) |\n"
     
+    # Tabs
+
+    ntu_tab, nycu_tab = st.tabs(['NTU', 'NYCU'])
+
     # Display both NTU and NYCU news tables
-    st.markdown("### NTU 最新消息")
-    st.markdown(md_template_ntu)
+    with ntu_tab:
+        st.markdown("### NTU 最新消息")
+        st.markdown(md_template_ntu)
     
-    st.markdown("### NYCU 最新消息")
-    st.markdown(md_template_nycu)
+    with nycu_tab:
+        st.markdown("### NYCU 最新消息")
+        st.markdown(md_template_nycu)
+
 display_news()
