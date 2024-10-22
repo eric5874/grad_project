@@ -63,7 +63,9 @@ else:
 
         st.write('### 最新消息')
         news_df = fetch_ntu_csie_news()
-        st.write(news_df)
+
+        # markdown table
+        st.write(news_df.to_markdown(index=False))
 
         st.write('### 資源')
         data_structure = st.expander('資料結構')
