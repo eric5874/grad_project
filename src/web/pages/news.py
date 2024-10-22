@@ -27,3 +27,4 @@ def display_news():
     
     st.markdown("### NYCU 最新消息")
     st.markdown(md_template_nycu)
+display_news()
