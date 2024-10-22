@@ -63,18 +63,29 @@ else:
         st.write(f'### {st.session_state["username"]}，歡迎回來！')
 
         st.write('### 最新消息')
-        news_df = fetch_ntu_csie_news()
-
-        # Create Markdown table header without the date column
-        md_template = """| 標題 | 連結 |\n| ---- | ---- |\n"""
-
-        # Fetch nycu information and skip the date column
-        news_df = fetch_nycu_admissions_info()
-        for i, row in news_df.iterrows():
+        
+        # Create Markdown table header with date column
+        md_template_ntu = """| NTU 標題 | 日期 | 連結 |\n| ---- | ---- | ---- |\n"""
+        md_template_nycu = """| NYCU 標題 | 連結 |\n| ---- | ---- |\n"""
+        
+        # Fetch NTU news and include date
+        ntu_news_df = fetch_ntu_csie_news()
+        for i, row in ntu_news_df.iterrows():
             full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
-            md_template += f"| {row['title']} | [Link]({full_link}) |\n"  # Skip the 'date' field
-
-        st.markdown(md_template)
+            md_template_ntu += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
+        
+        # Fetch NYCU news and exclude date
+        nycu_news_df = fetch_nycu_admissions_info()
+        for i, row in nycu_news_df.iterrows():
+            full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
+            md_template_nycu += f"| {row['title']} | [Link]({full_link}) |\n"
+        
+        # Display both NTU and NYCU news tables
+        st.markdown("### NTU 最新消息")
+        st.markdown(md_template_ntu)
+        
+        st.markdown("### NYCU 最新消息")
+        st.markdown(md_template_nycu)
 
         st.write('### 資源')
         data_structure = st.expander('資料結構')
