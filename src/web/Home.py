@@ -64,8 +64,13 @@ else:
         st.write('### 最新消息')
         news_df = fetch_ntu_csie_news()
 
+        md_template = """| 標題 | 日期 | 連結 |\n| ---- | ---- | ---- |\n"""
         # markdown table
-        st.write(news_df.to_markdown(index=False))
+        for i, row in news_df.iterrows():
+            full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
+            md_template += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
+
+        st.markdown(md_template)
 
         st.write('### 資源')
         data_structure = st.expander('資料結構')
