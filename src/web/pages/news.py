@@ -18,7 +18,7 @@ def display_news():
     # Fetch NYCU news and exclude date
     nycu_news_df = fetch_nycu_admissions_info()
     for i, row in nycu_news_df.iterrows():
-        full_link = f"https://www.csie.ntu.edu.tw/{row['link']}"
+        full_link = f"https://www.cs.nycu.edu.tw/admission/graduate/{row['link']}"
         md_template_nycu += f"| {row['title']} | [Link]({full_link}) |\n"
     
     # Display both NTU and NYCU news tables
@@ -27,6 +27,3 @@ def display_news():
     
     st.markdown("### NYCU 最新消息")
     st.markdown(md_template_nycu)
-
-        # 顯示最新消息
-display_news()
