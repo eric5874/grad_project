@@ -9,7 +9,8 @@ COPY requirements.txt /app/requirements.txt
 
 WORKDIR /app
 
-RUN /root/.cargo/bin/uv pip install --system --no-cache -r requirements.txt
+# 使用 python3 -m pip 安装依赖
+RUN /root/.cargo/bin/uv python3 -m pip install --system --no-cache -r requirements.txt
 
 COPY . /app
 
