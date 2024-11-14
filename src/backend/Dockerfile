@@ -1,19 +1,22 @@
 FROM python:3.11
 
+# 更新并安装所需的编译器
 RUN apt update && apt install -y gcc g++
 
-ADD --chmod=755 https://astral.sh/uv/install.sh /install.sh
-RUN /install.sh && rm /install.sh
-
+# 复制依赖文件
 COPY requirements.txt /app/requirements.txt
 
+# 设置工作目录
 WORKDIR /app
 
 # 使用 python3 -m pip 安装依赖
-RUN /root/.cargo/bin/uv python3 -m pip install --system --no-cache -r requirements.txt
+RUN python3 -m pip install --no-cache -r requirements.txt
 
+# 复制应用文件到容器
 COPY . /app
 
+# 暴露端口
 EXPOSE 8000
 
+# 设置容器启动命令
 CMD ["python3", "main.py"]
