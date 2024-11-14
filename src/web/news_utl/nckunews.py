@@ -3,7 +3,7 @@ import pandas as pd
 from bs4 import BeautifulSoup
 
 def fetch_announcements():
-    url = "https://www.csie.ncku.edu.tw/zh-hant/admission/csie"  # Update with the actual announcement page URL
+    url = "https://www.csie.ncku.edu.tw/zh-hant/news/masterAdmission"  # Update with the actual announcement page URL
     response = requests.get(url)
     response.encoding = 'utf-8'
 
