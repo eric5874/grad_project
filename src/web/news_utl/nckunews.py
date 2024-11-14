@@ -21,7 +21,7 @@ def fetch_announcements():
 
             # Extract and build the full link
             link = announcement.find("a")["href"]
-            full_link = f"https://example.com{link}"  # Ensure the URL is complete
+            full_link = f"https://www.csie.ncku.edu.tw{link}"  # Ensure the URL is complete
 
             # Extract date
             date = announcement.find("small", class_="float-right").get_text(strip=True)

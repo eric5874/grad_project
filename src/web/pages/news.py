@@ -30,15 +30,15 @@ def display_news():
     
     # Tabs
 
-    ntu_tab, nycu_tab, ncku_tab= st.tabs(['NTU', 'NYCU','nCku'])
+    ntu_tab, nycu_tab, ncku_tab= st.tabs(['NTU', 'NYCU','NCKU'])
 
     # Display both NTU and NYCU news tables
     with ntu_tab:
-        st.markdown("### NTU 最新消息")
+        st.markdown("### 台大 最新消息")
         st.markdown(md_template_ntu)
     
     with nycu_tab:
-        st.markdown("### NYCU 最新消息")
+        st.markdown("### 陽明交大 最新消息")
         st.markdown(md_template_nycu)
     with ncku_tab:
         st.markdown("### 成功大學 最新消息")
