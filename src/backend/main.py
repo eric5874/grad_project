@@ -101,31 +101,17 @@ def update_diary(data: dict):
 @app.post("/discussion")
 def create_discussion(data: dict):
     discussion_id = counter_db.incr("discussion_id")
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-    data["timestamp"] = timestamp  # Add a timestamp for each discussion
     discussion_db.hset(discussion_id, mapping=data)
     return {"message": "Discussion created successfully"}
 
 @app.get("/discussion")
 def get_all_discussions():
     discussions = []
-    
-    # Fetch all discussions, add a timestamp and sort by the latest discussion
     for key in discussion_db.keys():
         temp_data = discussion_db.hgetall(key)
         temp_data["id"] = key.decode()
         discussions.append(temp_data)
-    
-    # Sort discussions by timestamp in descending order
-    discussions = sorted(discussions, key=lambda d: d.get(b'timestamp').decode(), reverse=True)
-    
-    # Convert all byte keys/values to string for proper display
-    discussions = [
-        {k.decode(): v.decode() for k, v in discussion.items()} for discussion in discussions
-    ]
-    
     return {"discussions": discussions}
-
 # Favor API
 @app.post("/favor")
 def add_favor(data: dict):
