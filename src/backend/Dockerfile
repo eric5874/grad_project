@@ -1,22 +1,19 @@
-FROM python:3.11
+FROM ubuntu:22.04
 
-# 更新并安装所需的编译器
-RUN apt update && apt install -y gcc g++
+RUN apt update && apt install -y python3 python3-pip curl wget iputils-ping
 
-# 复制依赖文件
-COPY requirements.txt /app/requirements.txt
+RUN pip3 install --upgrade pip
 
-# 设置工作目录
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
 WORKDIR /app
 
-# 使用 python3 -m pip 安装依赖
-RUN python3 -m pip install --no-cache -r requirements.txt
+COPY ./requirements.txt /app/requirements.txt
 
-# 复制应用文件到容器
+RUN uv pip install --system --no-cache-dir -r /app/requirements.txt
+
 COPY . /app
 
-# 暴露端口
-EXPOSE 8000
+EXPOSE 10000
 
-# 设置容器启动命令
 CMD ["python3", "main.py"]
