@@ -14,6 +14,6 @@ RUN uv pip install --system --no-cache-dir -r /app/requirements.txt
 
 COPY . /app
 
-EXPOSE 10000
+EXPOSE 8000
 
 CMD ["python3", "main.py"]
