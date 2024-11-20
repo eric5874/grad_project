@@ -54,10 +54,10 @@ else:
     col1, col2 = st.columns([1, 4])
 
     with col1:
-        st.write('### 目錄')
-        st.write('1. [首頁](#目錄)')
-        st.write('2. [資源](#resources)')
-        st.write('3. [關於](#about)')
+        st.write('### Fast Access')
+        st.page_link("./pages/Account.py", label="我的帳戶", icon="👤")
+        st.page_link("./pages/News.py", label="最新消息", icon="📰")
+        st.page_link("./pages/Discussion.py", label="討論區", icon="💬")
 
     with col2:
         st.write(f'### {st.session_state["username"]}，歡迎回來！')
