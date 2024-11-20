@@ -1,11 +1,13 @@
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 def fetch_ntu_csie_news():
+    ua = UserAgent(browsers=['firefox'])
     URL = 'https://www.csie.ntu.edu.tw/'
 
-    r = requests.get(URL)
+    r = requests.get(URL, headers={'User-Agent': ua.random})
     soup = BeautifulSoup(r.text, 'html.parser')
 
     news = soup.find_all('div', class_='w-annc')[0]
