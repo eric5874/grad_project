@@ -1,11 +1,13 @@
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 def fetch_nycu_admissions_info():
+    ua = UserAgent()
     # 這裡假設你抓取的 URL 是正確的頁面
-    URL = 'https://www.cs.nycu.edu.tw/admission/graduate'  
-    r = requests.get(URL)
+    URL = 'https://www.cs.nycu.edu.tw/admission/graduate'
+    r = requests.get(URL, headers={'User-Agent': ua.random})
     soup = BeautifulSoup(r.text, 'html.parser')
 
     # 定位到包含招生資訊的部分
