@@ -1,10 +1,12 @@
 import requests
 import pandas as pd
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 def fetch_announcements():
+    ua = UserAgent(browsers=['chrome'])
     url = "https://www.csie.ncku.edu.tw/zh-hant/news/masterAdmission"  # Update with the actual announcement page URL
-    response = requests.get(url)
+    response = requests.get(url, headers={'User-Agent': ua.random})
     response.encoding = 'utf-8'
 
     if response.status_code == 200:
