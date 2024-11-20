@@ -53,7 +53,11 @@ else:
     st.title('資工所資源網站')
     col1, col2 = st.columns([1, 4])
 
-
+    with col1:
+        st.write('### 目錄')
+        st.write('1. [首頁](#目錄)')
+        st.write('2. [資源](#resources)')
+        st.write('3. [關於](#about)')
 
     with col2:
         st.write(f'### {st.session_state["username"]}，歡迎回來！')
