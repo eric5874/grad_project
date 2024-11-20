@@ -4,3 +4,4 @@ pillow
 beautifulsoup4
 pandas
 tabulate
+chardet
