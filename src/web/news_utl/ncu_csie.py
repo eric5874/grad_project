@@ -1,12 +1,14 @@
 import requests
 from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 import pandas as pd
 
 def fetch_ncu_news():
     URL = 'https://pdc.adm.ncu.edu.tw/'
+    ua = UserAgent(browsers=['safari'])
 
     # 發送請求
-    r = requests.get(URL)
+    r = requests.get(URL, headers={'User-Agent': ua.random})
 
     # 使用 chardet 檢測編碼
     try:
