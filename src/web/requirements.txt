@@ -6,3 +6,7 @@ pandas
 tabulate
 chardet
 fake-useragent
+langchain_community
+langchain_groq
+langchain_openai
+langchain
