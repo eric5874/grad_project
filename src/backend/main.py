@@ -12,12 +12,13 @@ HOST = os.getenv("HOST", "127.0.0.1")
 DB_URL = os.getenv("DB_URL", "localhost")
 
 # Redis databases
-user_db = redis.Redis(host=DB_URL, port=6379, db=0)  # For user credentials
-user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1)  # For user avatars
-discussion_db = redis.Redis(host=DB_URL, port=6379, db=2)  # For discussions
-counter_db = redis.Redis(host=DB_URL, port=6379, db=3)  # For discussion IDs
-favoured_db = redis.Redis(host=DB_URL, port=6379, db=4)  # For favorites
-user_diary_db = redis.Redis(host=DB_URL, port=6379, db=5)  # For mood diaries
+user_db = redis.Redis(host=DB_URL, port=6379, db=0)  # For user credentials (string)
+user_avatar_db = redis.Redis(host=DB_URL, port=6379, db=1)  # For user avatars (string)
+discussion_db = redis.Redis(host=DB_URL, port=6379, db=2)  # For discussions (hash)
+counter_db = redis.Redis(host=DB_URL, port=6379, db=3)  # For discussion IDs (counter)
+favoured_db = redis.Redis(host=DB_URL, port=6379, db=4)  # For favorites (list)
+user_diary_db = redis.Redis(host=DB_URL, port=6379, db=5)  # For mood diaries (string)
+news_db = redis.Redis(host=DB_URL, port=6379, db=6)  # For news
 
 app = FastAPI()
 
@@ -52,7 +53,7 @@ def get_avatar(username: str):
         return {"avatar": avatar.decode()}
     
     # Generate random default avatar if none exists
-    random_avatar = np.random.randint(1, 4)
+    random_avatar = np.random.randint(1, 5)
     with open(f"./default{random_avatar}_avatar.jpg", "rb") as f:
         avatar = base64.b64encode(f.read()).decode()
         user_avatar_db.set(username, avatar)
@@ -112,6 +113,7 @@ def get_all_discussions():
         temp_data["id"] = key.decode()
         discussions.append(temp_data)
     return {"discussions": discussions}
+
 # Favor API
 @app.post("/favor")
 def add_favor(data: dict):
