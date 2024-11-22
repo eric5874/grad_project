@@ -18,7 +18,7 @@ discussion_db = redis.Redis(host=DB_URL, port=6379, db=2)  # For discussions (ha
 counter_db = redis.Redis(host=DB_URL, port=6379, db=3)  # For discussion IDs (counter)
 favoured_db = redis.Redis(host=DB_URL, port=6379, db=4)  # For favorites (list)
 user_diary_db = redis.Redis(host=DB_URL, port=6379, db=5)  # For mood diaries (string)
-news_db = redis.Redis(host=DB_URL, port=6379, db=6)  # For news
+news_db = redis.Redis(host=DB_URL, port=6379, db=6)  # For news (sets)
 
 app = FastAPI()
 
@@ -126,6 +126,18 @@ def add_favor(data: dict):
 def get_favor(username: str):
     favours = favoured_db.lrange(username, 0, -1)
     return {"favours": [f.decode() for f in favours]}
+
+@app.post("/news")
+def update_news(data: dict):
+    school = data.get("school")
+    news = data.get("news")
+    news_db.sadd(school, news)
+    return {"message": "News updated successfully"}
+
+@app.get("/news")
+def get_news(school: str):
+    news = news_db.smembers(school)
+    return {"news": [n.decode() for n in news]}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
