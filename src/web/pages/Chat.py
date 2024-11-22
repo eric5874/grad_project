@@ -86,7 +86,7 @@ if user_input:
                 extract_response = extract_chain.invoke({"user_input": user_input, "content": embedding["page_content"]})
                 extracted_info += f"Page {embedding['metadata']['page']}: {extract_response}\n"
             
-        with st.status("Digital TA Thinking..."):
+        with st.status("Digital Assistant Thinking..."):
             chat_tmp.append(SystemMessage(f"Extracted information from the content: {extracted_info}"))
             chat_tmp.append(HumanMessage(user_input))
             response = chain.invoke({})
@@ -94,7 +94,7 @@ if user_input:
             st.session_state['chat_history'] = chat_tmp
     
     else:
-        with st.status("Digital TA Thinking..."):
+        with st.status("Digital Assistant Thinking..."):
             chat_tmp.append(HumanMessage(user_input))
             response = chain.invoke({})
             chat_tmp.append(AIMessage(response))
