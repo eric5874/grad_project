@@ -13,6 +13,11 @@ def save_news(news:str, university:str):
     response = requests.post(url, json={"news": news, "university": university})
     return response.json()
 
+def save_news_link(news:str, link:str, university:str):
+    url = f"http://{BACKEND_HOST}/news_link"
+    response = requests.post(url, json={"news": news, "link": link, "university": university})
+    return response.json()
+
 def display_news():
     st.write('### 最新消息')
     
@@ -28,6 +33,7 @@ def display_news():
         full_link = f"{row['link']}"
         md_template_ntu += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
         _ = save_news(row['title'], "NTU")
+        _ = save_news_link(row['title'], full_link, "NTU")
     
     # Fetch NYCU news and exclude date
     nycu_news_df = fetch_nycu_admissions_info()
@@ -35,6 +41,7 @@ def display_news():
         full_link = f"{row['link']}"
         md_template_nycu += f"| {row['title']} | [Link]({full_link}) |\n"
         _ = save_news(row['title'], "NYCU")
+        _ = save_news_link(row['title'], full_link, "NYCU")
 
     # Fetch NCKU news and include date
     ncku_news_df = fetch_announcements()
@@ -42,6 +49,7 @@ def display_news():
         full_link = f"{row['link']}"
         md_template_ncku += f"| {row['title']} | {row['date']} | [Link]({full_link}) |\n"
         _ = save_news(row['title'], "NCKU")
+        _ = save_news_link(row['title'], full_link, "NCKU")
 
     # Fetch NCU news and include date and unit
     ncu_news_df = fetch_ncu_news()
@@ -49,6 +57,7 @@ def display_news():
         full_link = f"{row['link']}"
         md_template_ncu += f"| {row['title']} | {row['date']} | [Link]({full_link}) | {row['unit']} |\n"
         _ = save_news(row['title'], "NCU")
+        _ = save_news_link(row['title'], full_link, "NCU")
     
     # Tabs for universities
     ntu_tab, nycu_tab, ncku_tab, ncu_tab = st.tabs(['NTU', 'NYCU', 'NCKU', 'NCU'])

@@ -19,6 +19,7 @@ counter_db = redis.Redis(host=DB_URL, port=6379, db=3)  # For discussion IDs (co
 favoured_db = redis.Redis(host=DB_URL, port=6379, db=4)  # For favorites (list)
 user_diary_db = redis.Redis(host=DB_URL, port=6379, db=5)  # For mood diaries (string)
 news_db = redis.Redis(host=DB_URL, port=6379, db=6)  # For news (sets)
+news_link_db = redis.Redis(host=DB_URL, port=6379, db=7)  # For news links (hash)
 
 app = FastAPI()
 
@@ -134,10 +135,27 @@ def update_news(data: dict):
     news_db.sadd(university, news)
     return {"message": "News updated successfully"}
 
-@app.get("/news")
+@app.post("/news_link")
+def update_news_link(data: dict):
+    university = data.get("university")
+    link = data.get("link")
+    news = data.get("news")
+    news_link_db.hset(university, news, link)
+
+@app.get("/news/{university}")
 def get_news(university: str):
     news = news_db.smembers(university)
     return {"news": [n.decode() for n in news]}
+
+@app.get("/news_link/{university}")
+def get_news_link(university: str):
+    news_links = news_link_db.hgetall(university)
+    return {"news_links": {k.decode(): v.decode() for k, v in news_links.items()}}
+
+@app.get("/news_link/{university}/{news}")
+def get_news_link_detail(university: str, news: str):
+    link = news_link_db.hget(university, news)
+    return {"link": link.decode()}
 
 if __name__ == "__main__":
     uvicorn.run(app, host=HOST, port=8000)
