@@ -129,14 +129,14 @@ def get_favor(username: str):
 
 @app.post("/news")
 def update_news(data: dict):
-    school = data.get("school")
-    news = data.get("news")
-    news_db.sadd(school, news)
+    university = data.get("university") # string
+    news = data.get("news") # string
+    news_db.sadd(university, news)
     return {"message": "News updated successfully"}
 
 @app.get("/news")
-def get_news(school: str):
-    news = news_db.smembers(school)
+def get_news(university: str):
+    news = news_db.smembers(university)
     return {"news": [n.decode() for n in news]}
 
 if __name__ == "__main__":
