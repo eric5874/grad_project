@@ -24,7 +24,7 @@ if 'chat_model' not in st.session_state:
 
 def embeddings_search(user_input: str, embedding_name: str) -> dict:
     # user_input = ts.translate_text(user_input, translator=TRANSLATOR_PROVIDER, to_language="en")
-    response = requests.post(f"{BACKEND_SERVER}/embed_query", json={"user_input": user_input, "embedding_name": embedding_name})
+    response = requests.post(f"http://{BACKEND_SERVER}/embed_query", json={"user_input": user_input, "embedding_name": embedding_name})
     if response.status_code == 200:
         return response.json()
     else:
@@ -33,7 +33,7 @@ def embeddings_search(user_input: str, embedding_name: str) -> dict:
 def news_search(universities: list[str]) -> dict[str, list[str]]:
     return_data = {}
     for university in universities:
-        response = requests.get(f"{BACKEND_SERVER}/news/{university}")
+        response = requests.get(f"http://{BACKEND_SERVER}/news/{university}")
         if response.status_code == 200:
             return_data[university] = response.json()['news'][0:3]
     return return_data
