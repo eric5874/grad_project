@@ -9,7 +9,7 @@ from news_utl.ncu_csie import fetch_ncu_news
 BACKEND_HOST = os.getenv("HOST", "http://localhost:8081")
 
 def save_news(news:str, university:str):
-    url = f"{BACKEND_HOST}/news"
+    url = f"http://{BACKEND_HOST}/news"
     response = requests.post(url, json={"news": news, "university": university})
     return response.json()
 
