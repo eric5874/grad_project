@@ -14,19 +14,13 @@ OLLAMA_SERVER = os.getenv("OLLAMA_SERVER", "http://localhost:11434")
 BACKEND_SERVER = os.getenv("BACKEND_SERVER", "http://localhost:8081")
 OPEN_API_KEY = os.getenv("OPENAI_API_KEY", "sk_test_1234567890")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY", "gsk_test_1234567890")
-EXTRACT_PROMPT = ChatPromptTemplate.from_template(
-    "You are an Top algorithm, you need to according to user input extract information from the content. user input: {user_input}, content: {content}"
+CONVERT_PROMPT = ChatPromptTemplate.from_template(
+    "You are an Top algorithm, you need to according to user input convert school name that user input to school name in database. user input: {user_input}, reference: {reference}"
 )
+REFERENCE = "NTU : 台灣大學, NYCU : 陽明交通, NCKU : 成功大學, NCU : 中央大學"
 
 if 'chat_model' not in st.session_state:
     st.session_state['chat_model'] = "llama-3.2-90b-text-preview-groq"
-
-def get_all_embeddings() -> list:
-    response = requests.get(f"{BACKEND_SERVER}/embedding_count")
-    if response.status_code == 200:
-        return response.json()["embedding_names"]
-    else:
-        return []
 
 def embeddings_search(user_input: str, embedding_name: str) -> dict:
     # user_input = ts.translate_text(user_input, translator=TRANSLATOR_PROVIDER, to_language="en")
@@ -35,6 +29,14 @@ def embeddings_search(user_input: str, embedding_name: str) -> dict:
         return response.json()
     else:
         return {"embeddings": [], "time": 0}
+
+def news_search(universities: list[str]) -> dict[str, list[str]]:
+    return_data = {}
+    for university in universities:
+        response = requests.get(f"{BACKEND_SERVER}/news/{university}")
+        if response.status_code == 200:
+            return_data[university] = response.json()['news'][0:3]
+    return return_data
 
 def init_chat_history() -> ChatPromptTemplate:
     if 'chat_history' not in st.session_state:
@@ -50,14 +52,7 @@ header_col, embeddings_select_col = st.columns([0.7,0.3])
 
 with header_col:
     st.header("Chat")
-
-with embeddings_select_col:
-    embeddings = get_all_embeddings()
-    embeddings_select = st.selectbox("Select an embedding", embeddings, index=None)
-
-with embeddings_select_col:
-    enable_translation = st.checkbox("Enable Translation", value=False, disabled=True)
-
+    
 st.divider()
 
 chat_tmp = init_chat_history()
@@ -72,33 +67,31 @@ user_input = st.chat_input("You can start a conversation with the AI Teaching As
 chain = chat_tmp | llm | StrOutputParser()
 
 if user_input:
-    if embeddings_select != None:
-        with st.status("Searching for book content..."):
-            embeddings_search_result = embeddings_search(user_input, embeddings_select)
+    schools = []
+    with st.status("Extracting information..."):
+        # for embedding in embeddings_search_result["results"]:
+        #     extract_template = EXTRACT_PROMPT
+        #     extract_chain = extract_template | llm | StrOutputParser()
+        #     extract_response = extract_chain.invoke({"user_input": user_input, "content": embedding["page_content"]})
+        #     extracted_info += f"Page {embedding['metadata']['page']}: {extract_response}\n"
+        convert_prompt = CONVERT_PROMPT
+        convert_chain = convert_prompt | llm | StrOutputParser()
+        convert_response = convert_chain.invoke({"user_input": user_input, "reference": REFERENCE})
+        schools = convert_response.split(", ")
 
-        with st.status("Extracting information..."):
-            extracted_info = ""
-            for embedding in embeddings_search_result["results"]:
-                # embedding is dict with keys: "page_content", "metadata"
-                # metadata is dict with keys: "page", "source"
-                extract_template = EXTRACT_PROMPT
-                extract_chain = extract_template | llm | StrOutputParser()
-                extract_response = extract_chain.invoke({"user_input": user_input, "content": embedding["page_content"]})
-                extracted_info += f"Page {embedding['metadata']['page']}: {extract_response}\n"
-            
-        with st.status("Digital Assistant Thinking..."):
-            chat_tmp.append(SystemMessage(f"Extracted information from the content: {extracted_info}"))
-            chat_tmp.append(HumanMessage(user_input))
-            response = chain.invoke({})
-            chat_tmp.append(AIMessage(response))
-            st.session_state['chat_history'] = chat_tmp
-    
-    else:
-        with st.status("Digital Assistant Thinking..."):
-            chat_tmp.append(HumanMessage(user_input))
-            response = chain.invoke({})
-            chat_tmp.append(AIMessage(response))
-            st.session_state['chat_history'] = chat_tmp
+    with st.status("Searching for Database..."):
+        news_search_result = news_search(schools)
+        news_search_result_str = ""
+        for school, news in news_search_result.items():
+            news_search_result_str += f"{school}: {news}\n"
+        extracted_info = news_search_result_str
+
+    with st.status("Digital Assistant Thinking..."):
+        chat_tmp.append(SystemMessage(f"Database infomation sort by schools: {extracted_info}"))
+        chat_tmp.append(HumanMessage(user_input))
+        response = chain.invoke({})
+        chat_tmp.append(AIMessage(response))
+        st.session_state['chat_history'] = chat_tmp
 
 for message in st.session_state['chat_history'].messages:
     if isinstance(message, HumanMessage):
