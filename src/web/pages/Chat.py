@@ -16,8 +16,8 @@ import os
 
 OLLAMA_SERVER = os.getenv("OLLAMA_SERVER", "http://localhost:11434")
 BACKEND_SERVER = os.getenv("BACKEND_SERVER", "http://localhost:8081")
-OPEN_API_KEY = os.getenv("OPENAI_API_KEY", "sk_test_1234567890")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "gsk_test_1234567890")
+OPEN_API_KEY = os.getenv("OPENAI_API_KEY")
+GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 CONVERT_PROMPT = ChatPromptTemplate.from_template(
     "你是一個高級演算法 可以把用戶提到的大學 轉換成英文縮寫 你可以參考 reference, return format: NTU, (no need futer responds.) user input: {user_input}, reference: {reference}"
 )
