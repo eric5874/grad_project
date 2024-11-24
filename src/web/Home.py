@@ -56,7 +56,7 @@ else:
     with col1:
         st.write('### Fast Access')
         st.page_link("./pages/Account.py", label="我的帳戶", icon="👤")
-        st.page_link("./pages/News.py", label="最新消息", icon="📰")
+        st.page_link("./pages/news.py", label="最新消息", icon="📰")
         st.page_link("./pages/Discussion.py", label="討論區", icon="💬")
 
     with col2:
