@@ -7,8 +7,8 @@ services:
       HOST: "backend:8000"
       BACKEND_SERVER: "backend:8000"
       OLLAMA_SERVER: ""
-      OPENAI_API_KEY: ${{ secrets.aikey }}
-      GROQ_API_KEY: "gsk_XXXX"
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
+      GROQ_API_KEY: ${GROQ_API_KEY}
     networks:
       - internal
   
