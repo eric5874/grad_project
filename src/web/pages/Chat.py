@@ -27,7 +27,7 @@ GET_NEWS_PROMPT = ChatPromptTemplate.from_template(
 REFERENCE = "NTU : 台灣大學, NYCU : 陽明交通, NCKU : 成功大學, NCU : 中央大學"
 
 if 'chat_model' not in st.session_state:
-    st.session_state['chat_model'] = "llama-3.2-90b-vision-preview-groq"
+    st.session_state['chat_model'] = "llama-3.2-90b-vision-preview llama-3.1-70b-versatile"
 
 def news_search(universities: list[str]) -> dict[str, list[str]]:
     return_data = {}
