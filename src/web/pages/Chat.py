@@ -20,6 +20,10 @@ BACKEND_SERVER = os.getenv("BACKEND_SERVER", "http://localhost:8081")
 OPEN_API_KEY = os.getenv("OPENAI_API_KEY")
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
+# check if chat_model is in session state
+if "chat_model" not in st.session_state:
+    st.session_state["chat_model"] = "llama-3.2-90b-vision-preview-groq"
+
 # Prompt 模版
 CONVERT_PROMPT = ChatPromptTemplate.from_template(
     "你是一個高級演算法，可以把用戶提到的大學轉換成英文縮寫。"
