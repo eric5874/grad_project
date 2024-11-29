@@ -22,7 +22,8 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 
 # check if chat_model is in session state
 if "chat_model" not in st.session_state:
-    st.session_state["chat_model"] = "llama-3.2-90b-vision-preview-groq"
+    # st.session_state["chat_model"] = "llama-3.2-90b-vision-preview-groq"
+    st.session_state["chat_model"] = "gpt-4-turbo-openai"
 
 # Prompt 模版
 CONVERT_PROMPT = ChatPromptTemplate.from_template(
@@ -49,7 +50,7 @@ def news_search(universities: list[str]) -> dict[str, list[str]]:
     return_data = {}
     for university in universities:
         try:
-            response = requests.get(f"{BACKEND_SERVER}/news/{university}")
+            response = requests.get(f"http://{BACKEND_SERVER}/news/{university}")
             response.raise_for_status()  # 確保 HTTP 狀態碼為 200
             return_data[university] = response.json().get("news", [])[:5]  # 最多返回 5 條新聞
         except requests.exceptions.RequestException as e:
@@ -59,7 +60,7 @@ def news_search(universities: list[str]) -> dict[str, list[str]]:
 # 獲取新聞詳細內容
 def get_news_detail(university: str, news: str) -> str:
     try:
-        response = requests.get(f"{BACKEND_SERVER}/news_link/{university}/{news}")
+        response = requests.get(f"http://{BACKEND_SERVER}/news_link/{university}/{news}")
         response.raise_for_status()
         link = response.json().get("link", "")
         if university == "NTU":

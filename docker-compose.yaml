@@ -7,8 +7,8 @@ services:
       HOST: "backend:8000"
       BACKEND_SERVER: "backend:8000"
       OLLAMA_SERVER: ""
-      OPENAI_API_KEY: "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"
-      GROQ_API_KEY: "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"
+      OPENAI_API_KEY: "sk-YOUR_API_KEY"
+      GROQ_API_KEY: "gsk_STILL_WITH_SOME_PROBLEMS"
     networks:
       - internal
   
